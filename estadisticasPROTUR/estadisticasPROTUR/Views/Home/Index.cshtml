@@ -29,3 +29,34 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        console.log("ready!");
+        test();
+    });
+
+
+
+
+    function test()
+    {
+
+        $.ajax({
+                type: "POST",
+                async:true,
+                url: "@Url.Action("Test", "test")",
+            success: function(data)
+            {
+                console.log(data);
+            },
+            error: function(e)
+            {
+                event.stopPropagation();
+                alert("error al acceder al servidor");
+            }
+        });
+
+    }
+</script>
