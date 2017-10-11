@@ -27,24 +27,26 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <!--<li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>-->
+                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Derivaciones", "Derivaciones", "Home")</li>
+                    <li>@Html.ActionLink("Sobre..", "About", "Home")</li>
                     @{
-                        List<SelectListItem> listItems = new List<SelectListItem>();
+                        /*List<SelectListItem> listItems = new List<SelectListItem>();
+
+
                         listItems.Add(new SelectListItem
                         {
-                            Text = "Inicio",
-                            Value = "1"
+                            Text = "Elija un submenú",
+                            //Value = Url.Action("")
                         });
                         listItems.Add(new SelectListItem
                         {
                             Text = "Derivaciones",
-                            Value = "2",
+                            Value = Url.Action("Derivaciones","Home")
                         });
-
+                        */
                     }
-                    @Html.DropDownList("ddNavegador", new SelectList(listItems, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+                    @*@Html.DropDownList("ddNavegador", new SelectList(listItems, "Value", "Text"), htmlAttributes: new { @class = "form-control mainDropdown" })*@
 
                 </ul>
             </div>
