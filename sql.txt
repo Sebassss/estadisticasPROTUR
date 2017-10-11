@@ -1,0 +1,11 @@
+	
+	create procedure spGetProturDerivado (@cs int) as
+	begin 
+	   SELECT PEC2.id AS HACIAID, COUNT(*) AS Cantidad FROM ProturRegistros PR 
+	    LEFT JOIN ProturEquivalenciasCaps PEC ON PR.CS = PEC.id
+	    LEFT JOIN ProturEquivalenciasCaps PEC2 ON PR.CT = PEC2.id
+	    WHERE PR.TT = 1 and PEC.id=@cs --AND PR.TA = 0 and PR.PE = 1
+	    GROUP BY  PEC2.id
+	end
+
+	
