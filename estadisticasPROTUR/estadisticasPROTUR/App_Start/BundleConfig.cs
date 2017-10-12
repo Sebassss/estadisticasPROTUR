@@ -36,6 +36,12 @@ namespace estadisticasPROTUR
             bundles.Add(new StyleBundle("~/Content/highcharts").Include(
                       "~/Content/highcharts.css"));
 
+            bundles.Add(new StyleBundle("~/Content/bootstrap-datepicker").Include(
+                      "~/Content/bootstrap-datepicker.standalone.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-datepicker").Include(
+                      "~/Scripts/bootstrap-datepicker.es.js",
+                      "~/Scripts/bootstrap-datepicker.min.js"));
 
         }
     }

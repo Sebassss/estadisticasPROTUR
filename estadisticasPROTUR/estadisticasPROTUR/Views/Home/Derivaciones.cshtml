@@ -13,7 +13,7 @@
         <div class="col-12">
             <h3> Ranking de derivaciones</h3>
 
-            <h4>Elija el centro de salud desde el cual envían las derivaciones:</h4>
+            <h4>Elija el centro de salud:</h4>
             @{
                 List<SelectListItem> listItems = new List<SelectListItem>();
 
@@ -21,29 +21,40 @@
             }
             @Html.DropDownList("ddNavegador", new SelectList(listItems, "Value", "Text"), htmlAttributes: new { @class = "form-control csDD" })
 
+            <br />
+            <h4>Elija rango de fechas:</h4>
             <div id="desdeContainer"></div>
+            @*
+    <h4>Elija el centro de salud que recibe derivaciones:</h4>
+    @{
+        List<SelectListItem> listItems2 = new List<SelectListItem>();
+        listItems2.Add(new SelectListItem
+        {
+            Text = "Un centro de salud",
+            Value = "1"
+        });
+        listItems2.Add(new SelectListItem
+        {
+            Text = "Otro centro de salud",
+            Value = "2",
+        });
 
-            <h4>Elija el centro de salud que recibe derivaciones:</h4>
-            @{
-                List<SelectListItem> listItems2 = new List<SelectListItem>();
-                listItems2.Add(new SelectListItem
-                {
-                    Text = "Un centro de salud",
-                    Value = "1"
-                });
-                listItems2.Add(new SelectListItem
-                {
-                    Text = "Otro centro de salud",
-                    Value = "2",
-                });
+    }
+    @Html.DropDownList("ddNavegador", new SelectList(listItems2, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+            *@
+            <div id="datepicker-container">
+                <div class="input-daterange input-group" id="datepicker">
+                    <span class="input-group-addon">Fecha desde</span>
+                    <input id="dateDesde" type="text" class="input-sm form-control" name="start" />
+                    <span class="input-group-addon">Fecha hasta</span>
+                    <input id="dateHasta" type="text" class="input-sm form-control" name="end" />
+                </div>
+            </div>
 
-            }
-            @Html.DropDownList("ddNavegador", new SelectList(listItems2, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+            <br />
 
+            <button class="btn btn-success" id="grafDerivaciones">Mostrar Gráfico</button>
 
-
-
-            <div id="haciaContainer"></div>
         </div>
     </div>
 
@@ -108,8 +119,10 @@
 
     }
 
-$(function () {
+    $(function () {
 
+        $('#datepicker-container input').datepicker({});
+        
         $.ajax({
             type: "POST",
             async: true,
@@ -119,27 +132,61 @@ $(function () {
             {
                 fillDropDownCS(data);
             },
+            error: function(e)
+            {
+                event.stopPropagation();
+                alert("error al acceder al servidor");
+                console.dir(e);
+            }
+        });
+    });
+
+    function fillDropDownCS(cs) {
+
+        var options = $(".csDD");
+ 
+        $.each(cs, function () {
+            options.append($("<option />").val(this.id).text(this.Nombre));
+        });
+    }
+
+
+    $("#grafDerivaciones").click(mostrarDerivaciones);
+
+    
+    function mostrarDerivaciones() {
+
+
+
+        $.ajax({
+            type: "POST",
+            async: true,
+            data: {
+                'csid': $(".csDD").find("option:selected").val(),
+                'fd': changeDateString($("#dateDesde")) ,
+                'fh': changeDateString($("#dateHasta"))
+            },
+            url: "@Url.Action("GetProturDerivado", "Derivaciones")",
+            success: function(data)
+            {
+                console.dir(data)
+            },
         error: function(e)
         {
             event.stopPropagation();
             alert("error al acceder al servidor");
             console.dir(e);
         }
-    });
-
-
-});
-
-    function fillDropDownCS(cs) {
-
-        var options = $(".csDD");
-
-        $.each(cs, function () {
-            options.append($("<option />").val(this.ID).text(this.Nombre));
         });
 
     }
 
+    function changeDateString(date) {
+
+        var dateSplited = $(date).val().split("/");
+
+        return dateSplited[2] + '-' + dateSplited[0] + '-' + dateSplited[1];
+    }
     
 
         

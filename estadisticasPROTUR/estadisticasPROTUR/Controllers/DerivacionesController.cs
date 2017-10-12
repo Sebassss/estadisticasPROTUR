@@ -68,7 +68,7 @@ namespace estadisticasPROTUR.Controllers
 
 
             cx = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_ARES"].ConnectionString);
-            consulta = "exec spGetProturDerivado @id @fd @fh";
+            consulta = "exec spGetProturDerivado @id, @fd, @fh";
 
             SqlDataAdapter da = new SqlDataAdapter(consulta, cx);
             da.SelectCommand.Parameters.AddWithValue("@id", csId);
