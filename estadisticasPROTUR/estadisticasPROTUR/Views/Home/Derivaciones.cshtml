@@ -6,3 +6,131 @@
 
 <h2>Derivaciones</h2>
 
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-12">
+            <h3> Ranking de derivaciones</h3>
+
+            <h4>Elija el centro de salud desde el cual envían las derivaciones:</h4>
+            @{
+                List<SelectListItem> listItems = new List<SelectListItem>();
+                listItems.Add(new SelectListItem
+                {
+                    Text = "Un centro de salud",
+                    Value = "1"
+                });
+                listItems.Add(new SelectListItem
+                {
+                    Text = "Otro centro de salud",
+                    Value = "2",
+                });
+
+            }
+            @Html.DropDownList("ddNavegador", new SelectList(listItems, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+
+            <div id="desdeContainer"></div>
+
+            <h4>Elija el centro de salud que recibe derivaciones:</h4>
+            @{
+                List<SelectListItem> listItems2 = new List<SelectListItem>();
+                listItems2.Add(new SelectListItem
+                {
+                    Text = "Un centro de salud",
+                    Value = "1"
+                });
+                listItems2.Add(new SelectListItem
+                {
+                    Text = "Otro centro de salud",
+                    Value = "2",
+                });
+
+            }
+            @Html.DropDownList("ddNavegador", new SelectList(listItems2, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+
+
+
+
+            <div id="haciaContainer"></div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Scripts/Derivaciones.js"></script>
+
+<script type="text/javascript">
+
+    //ejemplo de highcharts
+    function test()
+    {
+
+        var myChart = Highcharts.chart('desdeContainer', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'El centro de salud BLA emite las siguientes derivaciones: '
+            },
+            xAxis: {
+                categories: ['Apples', 'Bananas', 'Oranges']
+            },
+            yAxis: {
+                title: {
+                    text: 'Fruit eaten'
+                }
+            },
+            series: [{
+                name: 'Jane',
+                data: [1, 0, 4]
+            }, {
+                name: 'John',
+                data: [5, 7, 3]
+            }]
+        });
+        //fin de ejemplo
+
+        var myChart2 = Highcharts.chart('haciaContainer', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'El centro de salud BLA recibe las siguientes derivaciones: '
+            },
+            xAxis: {
+                categories: ['Apples', 'Bananas', 'Oranges']
+            },
+            yAxis: {
+                title: {
+                    text: 'Fruit eaten'
+                }
+            },
+            series: [{
+                name: 'Jane',
+                data: [1, 0, 4]
+            }, {
+                name: 'John',
+                data: [5, 7, 3]
+            }]
+        });
+        //fin de ejemplo
+
+    @*
+        $.ajax({
+                type: "POST",
+                async:true,
+                url: "@Url.Action("Test", "test")",
+            success: function(data)
+            {
+                console.log(data);
+            },
+            error: function(e)
+            {
+                event.stopPropagation();
+                alert("error al acceder al servidor");
+            }
+        });
+        *@
+    }
+</script>
