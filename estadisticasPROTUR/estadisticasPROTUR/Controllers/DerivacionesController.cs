@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace estadisticasPROTUR.Controllers
 {
-    public class TestController : Controller
+    public class DerivacionesController : Controller
     {
         // GET: Test
         public ActionResult Index()
@@ -20,7 +20,7 @@ namespace estadisticasPROTUR.Controllers
 
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult getCentrosDeSalud()
+        public JsonResult GetCentrosDeSalud()
         {
 
             SqlConnection cx = null;
@@ -28,7 +28,7 @@ namespace estadisticasPROTUR.Controllers
 
 
             cx = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_ARES"].ConnectionString);
-            consulta = "select ID,Nombre from CentroDeSalud order by Nombre asc";
+            consulta = "select id,Nombre from ProturEquivalenciasCaps order by Nombre asc";
 
             SqlDataAdapter da = new SqlDataAdapter(consulta, cx);
 

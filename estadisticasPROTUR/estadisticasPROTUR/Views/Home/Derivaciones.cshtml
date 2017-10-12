@@ -16,19 +16,10 @@
             <h4>Elija el centro de salud desde el cual envían las derivaciones:</h4>
             @{
                 List<SelectListItem> listItems = new List<SelectListItem>();
-                listItems.Add(new SelectListItem
-                {
-                    Text = "Un centro de salud",
-                    Value = "1"
-                });
-                listItems.Add(new SelectListItem
-                {
-                    Text = "Otro centro de salud",
-                    Value = "2",
-                });
+
 
             }
-            @Html.DropDownList("ddNavegador", new SelectList(listItems, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+            @Html.DropDownList("ddNavegador", new SelectList(listItems, "Value", "Text"), htmlAttributes: new { @class = "form-control csDD" })
 
             <div id="desdeContainer"></div>
 
@@ -57,8 +48,6 @@
     </div>
 
 </div>
-
-<script src="~/Scripts/Derivaciones.js"></script>
 
 <script type="text/javascript">
 
@@ -116,21 +105,42 @@
         });
         //fin de ejemplo
 
-    @*
+
+    }
+
+$(function () {
+
         $.ajax({
-                type: "POST",
-                async:true,
-                url: "@Url.Action("Test", "test")",
+            type: "POST",
+            async: true,
+            data: {'csid': 1},
+            url: "@Url.Action("GetCentrosDeSalud", "Derivaciones")",
             success: function(data)
             {
-                console.log(data);
+                fillDropDownCS(data);
             },
-            error: function(e)
-            {
-                event.stopPropagation();
-                alert("error al acceder al servidor");
-            }
+        error: function(e)
+        {
+            event.stopPropagation();
+            alert("error al acceder al servidor");
+            console.dir(e);
+        }
+    });
+
+
+});
+
+    function fillDropDownCS(cs) {
+
+        var options = $(".csDD");
+
+        $.each(cs, function () {
+            options.append($("<option />").val(this.ID).text(this.Nombre));
         });
-        *@
+
     }
+
+    
+
+        
 </script>
