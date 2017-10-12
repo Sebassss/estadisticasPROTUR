@@ -60,7 +60,7 @@ namespace estadisticasPROTUR.Controllers
 
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult GetProturDerivado(int csId)
+        public JsonResult GetProturDerivado(int csId, string fd, string fh)
         {
 
             SqlConnection cx = null;
@@ -68,10 +68,12 @@ namespace estadisticasPROTUR.Controllers
 
 
             cx = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_ARES"].ConnectionString);
-            consulta = "exec spGetProturDerivado @id";
+            consulta = "exec spGetProturDerivado @id @fd @fh";
 
             SqlDataAdapter da = new SqlDataAdapter(consulta, cx);
             da.SelectCommand.Parameters.AddWithValue("@id", csId);
+            da.SelectCommand.Parameters.AddWithValue("@fd", fd);
+            da.SelectCommand.Parameters.AddWithValue("@fh", fh);
 
             DataTable dt = new DataTable();
 
@@ -101,7 +103,7 @@ namespace estadisticasPROTUR.Controllers
 
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult GetProturProgramado(int csId)
+        public JsonResult GetProturProgramado(int csId, string fd, string fh)
         {
 
             SqlConnection cx = null;
@@ -109,10 +111,12 @@ namespace estadisticasPROTUR.Controllers
 
 
             cx = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_ARES"].ConnectionString);
-            consulta = "exec spGetProturProgramado @id";
+            consulta = "exec spGetProturProgramado @id @fd @fh";
 
             SqlDataAdapter da = new SqlDataAdapter(consulta, cx);
             da.SelectCommand.Parameters.AddWithValue("@id", csId);
+            da.SelectCommand.Parameters.AddWithValue("@fd", fd);
+            da.SelectCommand.Parameters.AddWithValue("@fh", fh);
 
             DataTable dt = new DataTable();
 
