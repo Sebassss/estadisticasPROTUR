@@ -23,24 +23,7 @@
             <br />
             <h4>Elija rango de fechas:</h4>
             <div id="desdeContainer"></div>
-            @*
-    <h4>Elija el centro de salud que recibe derivaciones:</h4>
-    @{
-        List<SelectListItem> listItems2 = new List<SelectListItem>();
-        listItems2.Add(new SelectListItem
-        {
-            Text = "Un centro de salud",
-            Value = "1"
-        });
-        listItems2.Add(new SelectListItem
-        {
-            Text = "Otro centro de salud",
-            Value = "2",
-        });
 
-    }
-    @Html.DropDownList("ddNavegador", new SelectList(listItems2, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
-            *@
             <div id="datepicker-container">
                 <div class="input-daterange input-group" id="datepicker">
                     <span class="input-group-addon">Fecha desde</span>
