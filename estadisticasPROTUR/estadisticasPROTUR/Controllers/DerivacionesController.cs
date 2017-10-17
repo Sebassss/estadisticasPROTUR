@@ -11,7 +11,7 @@ namespace estadisticasPROTUR.Controllers
 {
     public class DerivacionesController : Controller
     {
-        // GET: Test
+
         public ActionResult Index()
         {
             return View();

@@ -141,6 +141,7 @@
     function mostrarGraficoDerivaciones(result) {
 
         var hacia = [];
+        var cantidades = [];
 
         for (var index in result) {
 
@@ -151,9 +152,15 @@
                     hacia.push(csHaciaNombres[oindex].Nombre);
                 }
             }
+
+            cantidades.push(result[index].Cantidad);
         }
 
-        console.dir(hacia)
+        console.dir(cantidades)
+
+        console.dir(result)
+
+        
 
         var derivacionesChart = Highcharts.chart('derivacionesContainer', {
             chart: {
@@ -163,20 +170,18 @@
                 text: 'El centro de salud ' + $("#ddNavegador").find("option:selected").text() + ' recibe las siguientes derivaciones: '
             },
             xAxis: {
+                text: 'Centros de Salud',
                 categories: hacia
             },
             yAxis: {
                 title: {
-                    text: 'Centros de salud'
+                    text: 'Cantidad de derivaciones'
                 }
             },
             series: [{
-                name: 'Jane',
-                data: [1, 0, 4]
-            }, {
-                name: 'John',
-                data: [5, 7, 3]
-            }]
+                        text: 'Derivaciones',
+                        data: cantidades
+                    }]
         });
     }
 
