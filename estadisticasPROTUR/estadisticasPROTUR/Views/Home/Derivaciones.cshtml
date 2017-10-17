@@ -6,3 +6,191 @@
 
 <h2>Derivaciones</h2>
 
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-12">
+            
+            <h4>Elija el centro de salud:</h4>
+            @{
+                List<SelectListItem> listItems = new List<SelectListItem>();
+
+
+            }
+            @Html.DropDownList("ddNavegador", new SelectList(listItems, "Value", "Text"), htmlAttributes: new { @class = "form-control csDD" })
+
+            <br />
+            <h4>Elija rango de fechas:</h4>
+            <div id="desdeContainer"></div>
+            @*
+    <h4>Elija el centro de salud que recibe derivaciones:</h4>
+    @{
+        List<SelectListItem> listItems2 = new List<SelectListItem>();
+        listItems2.Add(new SelectListItem
+        {
+            Text = "Un centro de salud",
+            Value = "1"
+        });
+        listItems2.Add(new SelectListItem
+        {
+            Text = "Otro centro de salud",
+            Value = "2",
+        });
+
+    }
+    @Html.DropDownList("ddNavegador", new SelectList(listItems2, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+            *@
+            <div id="datepicker-container">
+                <div class="input-daterange input-group" id="datepicker">
+                    <span class="input-group-addon">Fecha desde</span>
+                    <input id="dateDesde" type="text" class="input-sm form-control" name="start" />
+                    <span class="input-group-addon">Fecha hasta</span>
+                    <input id="dateHasta" type="text" class="input-sm form-control" name="end" />
+                </div>
+            </div>
+
+            <br />
+
+            <button class="btn btn-success" id="grafDerivaciones">Mostrar Gráfico</button>
+
+        </div>
+    </div>
+
+    <div id="derivacionesContainer"></div>
+
+</div>
+
+<script type="text/javascript">
+
+    var csHaciaNombres = [];
+
+    $(function () {
+
+        $('#datepicker-container input').datepicker({});
+        
+        $.ajax({
+            type: "POST",
+            async: true,
+            data: {'csid': 1},
+            url: "@Url.Action("GetCentrosDeSalud", "Derivaciones")",
+            success: function(data)
+            {
+                csHaciaNombres = data;
+                fillDropDownCS(data);
+            },
+            error: function(e)
+            {
+                event.stopPropagation();
+                alert("error al acceder al servidor");
+                console.dir(e);
+            }
+        });
+    });
+
+    function fillDropDownCS(cs) {
+
+        var options = $(".csDD");
+ 
+        $.each(cs, function () {
+            options.append($("<option />").val(this.id).text(this.Nombre));
+        });
+    }
+
+
+    $("#grafDerivaciones").click(mostrarDerivaciones);
+
+    
+    function mostrarDerivaciones() {
+
+        var fechaCambiadaDesde = changeDateString($("#dateDesde"));
+        var fechaCambiadaHasta = changeDateString($("#dateHasta"));
+
+        if (fechaCambiadaDesde === false || fechaCambiadaHasta == false) {
+
+            alert("Ingrese amba fechas por favor");
+
+        }else{
+
+
+            $.ajax({
+                type: "POST",
+                async: true,
+                data: {
+                    'csid': $(".csDD").find("option:selected").val(),
+                    'fd': fechaCambiadaDesde,
+                    'fh': fechaCambiadaHasta
+                },
+                url: "@Url.Action("GetProturDerivado", "Derivaciones")",
+                success: function(data)
+                {
+                    mostrarGraficoDerivaciones(data);
+                
+                },
+                error: function(e)
+                {
+                    event.stopPropagation();
+                    alert("error al acceder al servidor, recargue la página e intente nuevamente");
+                    console.dir(e);
+                }
+            });
+        }
+
+    }
+
+    function mostrarGraficoDerivaciones(result) {
+
+        var hacia = [];
+
+        for (var index in result) {
+
+            for (var oindex in csHaciaNombres) {
+
+                if (csHaciaNombres[oindex].id == result[index].HACIAID) {
+
+                    hacia.push(csHaciaNombres[oindex].Nombre);
+                }
+            }
+        }
+
+        console.dir(hacia)
+
+        var derivacionesChart = Highcharts.chart('derivacionesContainer', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'El centro de salud ' + $("#ddNavegador").find("option:selected").text() + ' recibe las siguientes derivaciones: '
+            },
+            xAxis: {
+                categories: hacia
+            },
+            yAxis: {
+                title: {
+                    text: 'Centros de salud'
+                }
+            },
+            series: [{
+                name: 'Jane',
+                data: [1, 0, 4]
+            }, {
+                name: 'John',
+                data: [5, 7, 3]
+            }]
+        });
+    }
+
+    function changeDateString(date) {
+
+        if (date.val() == "") {
+            return false;
+        }
+
+        var dateSplited = $(date).val().split("/");
+
+        return dateSplited[2] + '-' + dateSplited[0] + '-' + dateSplited[1];
+    }
+    
+
+        
+</script>
